@@ -3,12 +3,12 @@ package io.kreatimont.model;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
+@Entity(name = "users")
 @Table(name = "users")
 public class User {
 
     @Id
-    @Column(name = "id", unique = true)
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 

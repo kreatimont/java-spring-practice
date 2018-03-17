@@ -4,35 +4,26 @@ import io.kreatimont.model.User;
 import io.kreatimont.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+@Controller
 @RequestMapping(path = "/guestbook")
 public class MainController {
 
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping(path = "/add")
-    public String addNewUser(@RequestParam String name, @RequestParam String surname) {
-
-        User user = new User();
-        user.setName(name);
-        user.setSurname(surname);
-        userRepository.save(user);
-
-        return "Saved";
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public String listUsers(ModelMap model) {
+        model.addAttribute("name", "kreatimont");
+        model.addAttribute("user", new User());
+        model.addAttribute("listUsers", StreamSupport.stream(userRepository.findAll().spliterator(), false).collect(Collectors.toList()));
+        return "users";
     }
-
-    @GetMapping(path = "/all")
-    public Iterable<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    @PostMapping(path = "/delete")
-    public void deleteUser(@RequestParam int id) {
-        userRepository.deleteById(id);
-    }
-
 
 }
