@@ -8,9 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.print.attribute.standard.Media;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -36,9 +34,13 @@ public class UserRestController {
         user.setSurname(surname);
         user.setCity(city);
 
-        User savedUser = userRepository.save(user);
+        userRepository.save(user);
+        Map<String, Object> response = new HashMap<>();
 
-        return Collections.singletonMap("data", "saved user: " + savedUser);
+        response.put("data", user);
+        response.put("success", "true");
+
+        return response;
     }
 
 }
